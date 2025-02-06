@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     
     strategy:
+      fail-fast: false
       matrix:
         include:
           - build: android-aarch64
@@ -42,6 +43,7 @@ jobs:
         run: |
           export CMAKE_TOOLCHAIN_FILE="$ANDROID_NDK/build/cmake/android.toolchain.cmake"
           export ANDROID_ABI="${{ matrix.target-simple }}"
+          export CARGO_NDK_ANDROID_TARGET="$ANDROID_ABI"
 
           cd rust
           cargo ndk -t ${{ matrix.target-simple }} build --release
