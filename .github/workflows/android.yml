@@ -24,14 +24,15 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Install Rust
+      - name: Install ${{ matrix.target-triple }} toolchains
         uses: dtolnay/rust-toolchain@nightly
         with:
           targets: ${{ matrix.target-triple }}
 
-      - name: Install cargo-ndk
+      - name: Install cargo-ndk & the toolchain (again)
         run: |
           cargo install cargo-ndk
+          rustup target install ${{ matrix.target-triple }}
 
       - name: Build project
         run: |
