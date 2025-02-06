@@ -39,10 +39,7 @@ jobs:
           export TOOLCHAIN=$ANDROID_NDK/build/cmake/android.toolchain.cmake
 
           cd rust
-          cargo ndk -t ${{ matrix.target-simple }} build --release \
-              -- \
-              -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN \
-              -DANDROID_ABI=armeabi-v7a
+          cargo ndk -t ${{ matrix.target-simple }} build --release -- -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN -DANDROID_ABI=armeabi-v7a
 
       - name: Upload
         uses: actions/upload-artifact@v4
