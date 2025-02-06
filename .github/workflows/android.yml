@@ -18,10 +18,12 @@ jobs:
           - build: android-aarch64
             target-triple: aarch64-linux-android
             target-simple: arm64-v8a
+            target-cmake: armv8-a
 
           - build: android-arm
             target-triple: armv7-linux-androideabi
             target-simple: armeabi-v7a
+            target-cmake: armv7-a
 
     steps:
       - name: Clone repository
@@ -44,6 +46,7 @@ jobs:
           export CMAKE_TOOLCHAIN_FILE="$ANDROID_NDK/build/cmake/android.toolchain.cmake"
           export ANDROID_ABI="${{ matrix.target-simple }}"
           export CARGO_NDK_ANDROID_TARGET="$ANDROID_ABI"
+          export CMAKE_C_FLAGS="-O3 -march=${{ matrix.target-cmake }}"
 
           cd rust
           cargo ndk -t ${{ matrix.target-simple }} build --release
