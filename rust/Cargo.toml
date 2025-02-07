@@ -1,11 +1,11 @@
 [package]
 name = "opus4j"
-version = "2.0.2"
-edition = "2021"
+version = "2.0.3"
+edition = "2025"
 
 [dependencies]
 jni = "0.21.1"
-opus = "0.3.0"
+opus = { git = "https://github.com/ThatMG393/opus-rs-updated" }
 
 [lib]
 crate_type = ["cdylib"]
