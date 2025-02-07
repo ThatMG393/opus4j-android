@@ -20,6 +20,14 @@ jobs:
             os: ubuntu-latest
             target-triple: i686-unknown-linux-gnu
 
+          - build: windows-x64
+            os: windows-2019
+            target-triple: x86_64-pc-windows-msvc
+
+          - build: windows-x86
+            os: windows-2019
+            target-triple: i686-pc-windows-msvc
+
     runs-on: ${{ matrix.os }}
     steps:
       - name: Clone repository
@@ -33,6 +41,7 @@ jobs:
 
       - name: Build project
         run: |
+          cd rust
           cargo build --target=${{ matrix.target-triple }} --release --lib
 
       - name: Upload built library
