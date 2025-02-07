@@ -1,4 +1,4 @@
-name: Android
+name: Release
 
 on:
   workflow_dispatch:
@@ -141,6 +141,7 @@ jobs:
             release/*.jar
 
       - name: Create release
+        continue-on-error: true
         uses: softprops/action-gh-release@v2
         with:
           files: |
