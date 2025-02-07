@@ -7,7 +7,41 @@ on:
       - "[0-9]+.[0-9]+.[0-9]+"
 
 jobs:
-  build-rust:
+  build-rust-general:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - build: linux-x64
+            os: ubuntu-latest
+            target-triple: x86_64-unknown-linux-gnu
+
+          - build: linux-x86
+            os: ubuntu-latest
+            target-triple: i686-unknown-linux-gnu
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install ${{ matrix.target-triple }} toolchains
+        run: |
+          rustup target add ${{ matrix.target-triple }}
+
+      - name: Build project
+        run: |
+          cargo build --target=${{ matrix.target-triple }} --release --lib
+
+      - name: Upload built library
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.build }}
+          path: rust/target/${{ matrix.target-triple }}/release/*.so
+
+
+  build-rust-android:
     name: Build Binaries
     runs-on: ubuntu-latest
     
@@ -60,7 +94,7 @@ jobs:
   build:
     name: Build & Publish Jar
     runs-on: ubuntu-latest
-    needs: build-rust
+    needs: [build-rust-android, build-rust-general]
 
     steps:
       - name: Clone repository
